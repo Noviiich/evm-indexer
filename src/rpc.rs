@@ -1,8 +1,7 @@
 use ethers::{
-    providers::{Http, Middleware, Provider}, 
-    core::types::Block,
+    providers::{Http, Middleware, Provider}, types::{Block, H256}, 
 };
-use crate::utils::convert_block_number;
+use crate::utils::format::convert_block_number;
 
 pub struct RpcClient {
     provider: Provider<Http>
@@ -26,17 +25,22 @@ impl RpcClient {
         }
     }
 
-    pub async fn get_block(&self) -> eyre::Result<()> {
-        let block_number = self.get_last_block().await;
+    pub async fn get_block(&self, block_number: u64) -> eyre::Result<Block<H256>> {
         let raw_block = self.provider.get_block(block_number).await;
         match raw_block {
             Ok(block) => {
-
+                match block {
+                    Some(block) => {
+                        Ok(block)
+                    }
+                    None => {
+                        Err(eyre::eyre!("Block not found"))
+                    }
+                }
             }
             Err(e) => {
-
+                Err(eyre::eyre!("Error fetching block: {}", e))
             }
         }
-        Ok(())
     }
 }
