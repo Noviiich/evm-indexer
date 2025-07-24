@@ -7,3 +7,9 @@ edition = "2024"
 ethers = "2.0.14"
 eyre = "0.6.12"
 tokio = { version = "1", features = ["full"] }
+sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "sqlite"] }
+dotenv = "0.15.0"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.141"
+diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
+hex = "0.4.3"
